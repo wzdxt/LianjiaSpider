@@ -47,7 +47,7 @@ FROM xiaoqu xq
   JOIN ershoufang h ON h.xiaoqu_page_id = xq.page_id AND h.sold_date IS NOT NULL
 ORDER BY xq.id;
 
-# 总价分布
+# 成交总价分布
 SET @jiange = 200;
 SET @sum = (SELECT count(*)
             FROM ershoufang h

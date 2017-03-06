@@ -37,15 +37,26 @@ func run() {
 	finishChannel <- struct{}{}
 }
 
-var mutex = sync.Mutex{}
+var n = 10;
+var limit = make(chan struct{}, n)
+
+func init() {
+	for i := 0; i < n; i++ {
+		limit <- struct{}{}
+	}
+}
 
 func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg sync.WaitGroup) {
+	<-limit
+	defer func() {
+		limit <- struct{}{}
+	}()
 	house, price := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
 	house.Id = ershoufang.Id
 	log.Printf("get ershoufang(%#v) price(%#v)", house, price)
-	mutex.Lock()
-	defer mutex.Unlock()
-	ershoufang_repo.Save(house)
+	func() {
+		ershoufang_repo.Save(house)
+	}()
 	price.ErshoufangId = house.Id
 	lastPrice := ershoufang.GetLastPrice()
 
