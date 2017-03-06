@@ -24,7 +24,8 @@ func GetDocFromUrl(url string) *goquery.Document {
 		var err error
 		doc, err = goquery.NewDocument(url)
 		if err != nil {
-			log.Fatal(err)
+			log.Println("http get error", err)
+			continue
 		}
 		if doc.Find("p.errorMessageInfo").Size() == 0 {
 			break
