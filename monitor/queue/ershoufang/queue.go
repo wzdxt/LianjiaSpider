@@ -31,7 +31,7 @@ func run() {
 		ershoufang := ershoufangQueue[0]
 		log.Printf("start process %s", ershoufang)
 		ershoufangQueue = ershoufangQueue[1:]
-		go checkErshoufang(ershoufang, wg)
+		go checkErshoufang(ershoufang, &wg)
 	}
 	wg.Wait()
 	finishChannel <- struct{}{}
@@ -46,7 +46,7 @@ func init() {
 	}
 }
 
-func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg sync.WaitGroup) {
+func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg *sync.WaitGroup) {
 	<-limit
 	defer func() {
 		limit <- struct{}{}
@@ -54,9 +54,7 @@ func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg sync.WaitGroup) {
 	house, price := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
 	house.Id = ershoufang.Id
 	log.Printf("get ershoufang(%#v) price(%#v)", house, price)
-	func() {
-		ershoufang_repo.Save(house)
-	}()
+	ershoufang_repo.Save(house)
 	price.ErshoufangId = house.Id
 	lastPrice := ershoufang.GetLastPrice()
 
