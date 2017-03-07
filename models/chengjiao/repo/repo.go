@@ -21,7 +21,7 @@ func Save(chengjiao *chengjiao.Chengjiao) *chengjiao.Chengjiao {
 }
 
 func New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, date time.Time, unitPrice, price     int) *chengjiao.Chengjiao {
-	return chengjiao.Chengjiao{
+	return &chengjiao.Chengjiao{
 		Name  :name,
 		PageId:  pageId,
 		Pic  :pic,

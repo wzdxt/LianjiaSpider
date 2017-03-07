@@ -39,10 +39,10 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 		xiaoquPageId = ""
 	}
 	var soldDate *time.Time = nil
-	if doc.Find("#album-box div.tag_yixiajia").Size() > 0 || doc.Find("div.pic-cj").Size() > 0 {
-		tmp := time.Now()
-		soldDate = &tmp
-	}
+	//if doc.Find("#album-box div.tag_yixiajia").Size() > 0 || doc.Find("div.pic-cj").Size() > 0 {
+	//	tmp := time.Now()
+	//	soldDate = &tmp
+	//}
 	price, _ := strconv.ParseInt(doc.Find("div.content div.houseInfo div.price div.mainInfo").Nodes[0].FirstChild.Data, 10, 64)
 	unitPriceStr := doc.Find("table.aroundInfo td:contains(单价) span").Nodes[0].NextSibling.Data
 	unitPrice, _ := strconv.ParseInt(regexp.MustCompile("\\d+").FindString(unitPriceStr), 10, 64)

@@ -66,13 +66,15 @@ func travelXiaoqu(xiaoqu *xiaoqu.Xiaoqu) {
 
 func TravelXiaoquList() {
 	for i := 1; i < 2000; i += 1 {
-		travelXiaoquListRange(i)
+		if travelXiaoquListRange(i) == 0 {
+			break
+		}
 		time.Sleep(3 * time.Second)
 	}
 	log.Println("finish")
 }
 
-func travelXiaoquListRange(i int) {
+func travelXiaoquListRange(i int) int {
 	url := fmt.Sprintf("http://sh.lianjia.com/xiaoqu/d%ds13", i)
 	doc := inspector.GetDocFromUrl(url)
 
