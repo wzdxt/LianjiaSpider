@@ -27,6 +27,7 @@ func TravelAllXiaoqu() {
 		if xiaoqu.Id > maxId {
 			maxId = xiaoqu.Id
 		}
+		time.Sleep(1 * time.Second)
 	}
 	wg.Wait()
 	db.SetLastTravelXiaoquProcessId(maxId);
@@ -34,6 +35,7 @@ func TravelAllXiaoqu() {
 }
 
 var mutex = sync.Mutex{}
+
 func travelXiaoqu(xiaoqu *xiaoqu.Xiaoqu) {
 	for i := 1; ; i++ {
 		url := xiaoqu.GetTravelUrl(i)
@@ -72,7 +74,7 @@ func TravelXiaoquList() {
 		default:
 			go travelXiaoquListRange(i + 1, i + 10, c)
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 	log.Println("finish")
 }
