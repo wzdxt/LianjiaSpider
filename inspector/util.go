@@ -31,7 +31,7 @@ func GetDocFromUrl(url string) *goquery.Document {
 			break
 		}
 		log.Println(doc.Find("p.errorMessageInfo").Text())
-		log.Println("wait error page")
+		log.Println("wait error page ", url)
 		time.Sleep(10 * time.Second)
 	}
 	return doc

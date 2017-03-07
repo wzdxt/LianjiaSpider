@@ -13,11 +13,16 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
+var chengjiaoConflict = 0
+
 func FollowChengjiao() {
 	for i := 1; ; i++ {
 		if cnt := travelChengjiao(i); cnt == 0 {
 			return
 		}
+		//if chengjiaoConflict > 50 {
+		//	return
+		//}
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -29,6 +34,7 @@ func travelChengjiao(i int) int {
 		defer func() {
 			if err := recover(); err != nil {
 				if err, ok := err.(*mysql.MySQLError); ok && err.Number == 1062 {
+					chengjiaoConflict++
 				} else {
 					panic(err)
 				}
