@@ -32,3 +32,15 @@ func SetLastErshoufangProcessId(val int64) {
 	client.Set("process:ershoufang", val)
 }
 
+func GetLastTravelXiaoquProcessId() int64 {
+	client := RedisInstance()
+	str, _ := client.Get("process:travel_xiaoqu")
+	res64, _ := strconv.ParseInt(str, 10, 64)
+	return res64
+}
+
+func SetLastTravelXiaoquProcessId(val int64) {
+	client := RedisInstance()
+	client.Set("process:ershoufang:travel_xiaoqu", val)
+}
+

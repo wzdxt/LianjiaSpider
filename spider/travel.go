@@ -12,17 +12,24 @@ import (
 	"fmt"
 	"strconv"
 	"github.com/wzdxt/lianjia-spider/inspector"
+	"github.com/wzdxt/lianjia-spider/db"
 )
 
 var wg = sync.WaitGroup{}
 
 func TravelAllXiaoqu() {
-	xiaoqus := xiaoqu_repo.AllWithErshoufang()
+	lastId := db.GetLastTravelXiaoquProcessId();
+	xiaoqus := xiaoqu_repo.WithErshoufangBatchAfter(lastId)
 	wg.Add(len(xiaoqus))
+	var maxId int64 = 0
 	for _, xiaoqu := range xiaoqus {
 		go travelXiaoqu(xiaoqu)
+		if xiaoqu.Id > maxId {
+			maxId = xiaoqu.Id
+		}
 	}
 	wg.Wait()
+	db.SetLastTravelXiaoquProcessId(maxId);
 	log.Println("finish")
 }
 

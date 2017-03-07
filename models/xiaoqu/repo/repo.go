@@ -47,6 +47,10 @@ func AllWithErshoufang() []*xiaoqu.Xiaoqu {
 	return executeSelect("where number>0")
 }
 
+func WithErshoufangBatchAfter(id int64) []*xiaoqu.Xiaoqu {
+	return executeSelect("where number>0 and id>? order by id limit 1000", id)
+}
+
 func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 	if xiaoqu.Id != 0 {
 		Update(xiaoqu)
