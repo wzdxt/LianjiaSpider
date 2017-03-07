@@ -6,7 +6,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*ershoufang_price.ErshoufangPrice {
-	rows, err := db.Instance().Query("select id, ershoufang_id, xiaoqu_id, price, unit_price, prev_id from ershoufang_price " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, ershoufang_id, xiaoqu_id, price, unit_price, prev_id from ershoufang_price " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
@@ -33,7 +33,7 @@ func Get(id string) *ershoufang_price.ErshoufangPrice {
 }
 
 func Save(price *ershoufang_price.ErshoufangPrice) *ershoufang_price.ErshoufangPrice {
-	res, err := db.Instance().Exec("insert into ershoufang_price (ershoufang_id, xiaoqu_id, price, unit_price, prev_id) values(?,?,?,?,?)",
+	res, err := db.DBInstance().Exec("insert into ershoufang_price (ershoufang_id, xiaoqu_id, price, unit_price, prev_id) values(?,?,?,?,?)",
 		price.ErshoufangId, price.XiaoquId, price.Price, price.UnitPrice, price.PrevId, )
 	if err != nil {
 		panic(err)

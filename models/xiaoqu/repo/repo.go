@@ -6,7 +6,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*xiaoqu.Xiaoqu {
-	rows, err := db.Instance().Query("select id, page_id, name, number from xiaoqu " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, page_id, name, number from xiaoqu " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
@@ -52,7 +52,7 @@ func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 		Update(xiaoqu)
 		return xiaoqu
 	}
-	res, err := db.Instance().Exec("insert into xiaoqu (page_id, name, number) values(?,?,?)",
+	res, err := db.DBInstance().Exec("insert into xiaoqu (page_id, name, number) values(?,?,?)",
 		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Number)
 	if err != nil {
 		panic(err)
@@ -62,7 +62,7 @@ func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 }
 
 func Update(xiaoqu *xiaoqu.Xiaoqu) int64 {
-	res, err := db.Instance().Exec("update xiaoqu set page_id=?, name=?, number=? where id=?",
+	res, err := db.DBInstance().Exec("update xiaoqu set page_id=?, name=?, number=? where id=?",
 		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Number, xiaoqu.Id, )
 	if err != nil {
 		panic(err)

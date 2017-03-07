@@ -7,7 +7,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*ershoufang.Ershoufang {
-	rows, err := db.Instance().Query("select id, page_id, name, size, xiaoqu_page_id, sold_date from ershoufang " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, page_id, name, size, xiaoqu_page_id, sold_date from ershoufang " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +39,10 @@ func All() []*ershoufang.Ershoufang {
 
 func Unsold() []*ershoufang.Ershoufang {
 	return executeSelect("where sold_date is null")
-	//return All()
+}
+
+func UnsoldBatchAfter(id int64) []*ershoufang.Ershoufang {
+	return executeSelect("where sold_date is null and id>? order by id limit 1000", id)
 }
 
 func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
@@ -47,7 +50,7 @@ func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
 		Update(ershoufang)
 		return ershoufang
 	}
-	res, err := db.Instance().Exec("insert into ershoufang (page_id, name, size, xiaoqu_page_id, sold_date) values(?,?,?,?,?)",
+	res, err := db.DBInstance().Exec("insert into ershoufang (page_id, name, size, xiaoqu_page_id, sold_date) values(?,?,?,?,?)",
 		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.XiaoquPageId, ershoufang.SoldDate)
 	if err != nil {
 		panic(err)
@@ -57,7 +60,7 @@ func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
 }
 
 func Update(ershoufang *ershoufang.Ershoufang) int64 {
-	res, err := db.Instance().Exec("update ershoufang set page_id=?, name=?, size=?, xiaoqu_page_id=?, sold_date=? where id=?",
+	res, err := db.DBInstance().Exec("update ershoufang set page_id=?, name=?, size=?, xiaoqu_page_id=?, sold_date=? where id=?",
 		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.XiaoquPageId, ershoufang.SoldDate, ershoufang.Id, )
 	if err != nil {
 		panic(err)

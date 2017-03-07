@@ -9,7 +9,7 @@ import (
 var instance *sql.DB
 var once sync.Once
 
-func Instance() *sql.DB {
+func DBInstance() *sql.DB {
 	once.Do(func() {
 		var err error
 		if instance, err = sql.Open("mysql", "root:123456@(docker:3306)/lianjia?parseTime=true"); err != nil {
