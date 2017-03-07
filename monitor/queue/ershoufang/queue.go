@@ -37,7 +37,7 @@ func run() {
 	finishChannel <- struct{}{}
 }
 
-var n = 10;
+var n = 3;
 var limit = make(chan struct{}, n)
 
 func init() {
