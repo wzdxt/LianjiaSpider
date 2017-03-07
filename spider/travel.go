@@ -39,7 +39,7 @@ var mutex = sync.Mutex{}
 func travelXiaoqu(xiaoqu *xiaoqu.Xiaoqu) {
 	for i := 1; ; i++ {
 		url := xiaoqu.GetTravelUrl(i)
-		doc := inspector.GetDocFromUrl(url)
+		doc, _ := inspector.GetDocFromUrl(url)
 
 		if doc.Find("div.main-box div.list-wrap ul.house-lst li h2 a").Each(func(_ int, sel *goquery.Selection) {
 			defer func() {
@@ -76,7 +76,7 @@ func TravelXiaoquList() {
 
 func travelXiaoquListRange(i int) int {
 	url := fmt.Sprintf("http://sh.lianjia.com/xiaoqu/d%ds13", i)
-	doc := inspector.GetDocFromUrl(url)
+	doc, _ := inspector.GetDocFromUrl(url)
 
 	return doc.Find("ul#house-lst li div.info-panel").Has("h2 a").Each(func(_ int, sel *goquery.Selection) {
 		defer func() {

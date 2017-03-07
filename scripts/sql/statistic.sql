@@ -21,9 +21,28 @@ SELECT
   p.unit_price 单价
 FROM ershoufang h
   JOIN ershoufang_price pp ON h.id = pp.ershoufang_id AND pp.prev_id > 0
+                              AND date_format(pp.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
   LEFT JOIN ershoufang_price p ON h.id = p.ershoufang_id
   JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
 ORDER BY xq.id, h.id, p.id;
+
+# 今日调价趋势
+SELECT
+  sum(调幅),
+  sum(面积),
+  sum(调幅) / sum(面积) * 100 单价差
+FROM (
+       SELECT
+         xq.name            小区,
+         h.name             房产,
+         h.size             面积,
+         p.price - pp.price 调幅
+       FROM ershoufang_price p
+         JOIN ershoufang_price pp ON p.prev_id = pp.id
+         JOIN ershoufang h ON p.ershoufang_id = h.id
+         JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
+       WHERE date_format(p.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
+     ) t;
 
 # 今日新房源
 SELECT

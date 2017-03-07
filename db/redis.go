@@ -13,7 +13,7 @@ var once2 sync.Once
 func RedisInstance() *redis.Client {
 	once2.Do(func() {
 		instance2 = redis.New()
-		if err := instance2.Connect("docker", 6379); err != nil {
+		if err := instance2.Connect("lianjia-redis", 6379); err != nil {
 			panic(err)
 		}
 	})

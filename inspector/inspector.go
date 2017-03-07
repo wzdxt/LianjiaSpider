@@ -22,7 +22,10 @@ func InspectErshoufang(content string) *ershoufang.Ershoufang {
 }
 
 func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_price.ErshoufangPrice) {
-	doc := GetDocFromUrl(url)
+	doc, err := GetDocFromUrl(url)
+	if err != nil {
+		return nil, nil
+	}
 	html, _ := doc.Html()
 
 	r := regexp.MustCompile("房源编号：(sh\\d+)")
@@ -50,7 +53,7 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 }
 
 func InspectXiaoquFromUrl(url string) *xiaoqu.Xiaoqu {
-	doc := GetDocFromUrl(url)
+	doc, _ := GetDocFromUrl(url)
 	//html, _ := doc.Html()
 	//log.Println(html)
 

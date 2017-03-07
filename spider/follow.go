@@ -29,7 +29,7 @@ func FollowChengjiao() {
 
 func travelChengjiao(i int) int {
 	url := fmt.Sprintf("http://sh.lianjia.com/chengjiao/d%d", i)
-	doc := inspector.GetDocFromUrl(url)
+	doc, _ := inspector.GetDocFromUrl(url)
 	return doc.Find("ul.clinch-list li").Each(func(_ int, sel *goquery.Selection) {
 		defer func() {
 			if err := recover(); err != nil {

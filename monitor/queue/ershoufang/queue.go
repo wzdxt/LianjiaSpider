@@ -38,6 +38,7 @@ func run() {
 }
 
 var n = 3;
+
 var limit = make(chan struct{}, n)
 
 func init() {
@@ -52,6 +53,9 @@ func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg *sync.WaitGroup) {
 		limit <- struct{}{}
 	}()
 	house, price := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
+	if house == nil {
+		return
+	}
 	house.Id = ershoufang.Id
 	log.Printf("get ershoufang(%#v) price(%#v)", house, price)
 	ershoufang_repo.Save(house)

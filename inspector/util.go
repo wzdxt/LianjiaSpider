@@ -4,6 +4,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"log"
 	"time"
+	"strings"
+	"errors"
 )
 
 var limit = make(chan struct{}, 10)
@@ -14,7 +16,7 @@ func init() {
 	}
 }
 
-func GetDocFromUrl(url string) *goquery.Document {
+func GetDocFromUrl(url string) (*goquery.Document, error) {
 	<-limit
 	defer func() {
 		limit <- struct{}{}
@@ -30,9 +32,13 @@ func GetDocFromUrl(url string) *goquery.Document {
 		if doc.Find("p.errorMessageInfo").Size() == 0 {
 			break
 		}
-		log.Println(doc.Find("p.errorMessageInfo").Text())
+		text := doc.Find("p.errorMessageInfo").Text()
+		log.Println(text)
 		log.Println("wait error page ", url)
+		if strings.Contains(text, "稍安勿躁") {
+			return nil, errors.New(text)
+		}
 		time.Sleep(10 * time.Second)
 	}
-	return doc
+	return doc, nil
 }
