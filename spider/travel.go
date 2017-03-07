@@ -62,7 +62,7 @@ func travelXiaoqu(xiaoqu *xiaoqu.Xiaoqu) {
 	log.Println("done")
 }
 
-func TranvelXiaoquList() {
+func TravelXiaoquList() {
 	c := make(chan struct{})
 	out:
 	for i := 0; i < 2000; i += 10 {
