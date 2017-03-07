@@ -54,6 +54,7 @@ func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg *sync.WaitGroup) {
 	}()
 	house, price := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
 	if house == nil {
+		wg.Done()
 		return
 	}
 	house.Id = ershoufang.Id
