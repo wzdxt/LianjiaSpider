@@ -40,7 +40,7 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 	}
 	var soldDate *time.Time = nil
 	if doc.Find("#album-box div.tag_yixiajia").Size() > 0 || doc.Find("div.pic-cj").Size() > 0 {
-		tmp := time.Now().Add(-24 * time.Hour)
+		tmp := time.Now()
 		soldDate = &tmp
 	}
 	price, _ := strconv.ParseInt(doc.Find("div.content div.houseInfo div.price div.mainInfo").Nodes[0].FirstChild.Data, 10, 64)
