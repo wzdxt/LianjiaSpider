@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 )
 
 func main() {
@@ -40,6 +41,8 @@ func main() {
 	//number64 := regexp.MustCompile("（(\\d+)）").FindStringSubmatch("在售二手房（174）")
 	//log.Println(number64)
 
-	log.Printf("%#v", "123")
+	t,e  := time.Parse("2006-01-02MST", "2016-12-04CST")
+	log.Printf("%s", t)
+	log.Printf("%#v", e)
 }
 
