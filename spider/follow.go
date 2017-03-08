@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"net/http/cookiejar"
+	"os"
 )
 
 var chengjiaoConflict = 0
@@ -94,6 +95,7 @@ func travelChengjiao(i int) int {
 		price := fetchNumber(pStr)
 		log.Println(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price, room, size)
 		repo.Create(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price, room, size)
+		os.Exit(0)
 	}).Size()
 }
 

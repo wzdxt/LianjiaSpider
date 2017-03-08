@@ -8,11 +8,11 @@ import (
 
 func Save(chengjiao *chengjiao.Chengjiao) *chengjiao.Chengjiao {
 	res, err := db.DBInstance().Exec("insert into chengjiao (" +
-		"name, page_id, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unit_price, price" +
-		") values(?,?,?,?,?,?,?,?,?,?,?)",
+		"name, page_id, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unit_price, price, room, size" +
+		") values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
 		chengjiao.Name, chengjiao.PageId, chengjiao.Pic, chengjiao.Qu, chengjiao.Bankuai,
 		chengjiao.Louceng, chengjiao.Chaoxiang, chengjiao.Zhuangxiu,
-		chengjiao.Date, chengjiao.UnitPrice, chengjiao.Price)
+		chengjiao.Date, chengjiao.UnitPrice, chengjiao.Price, chengjiao.Room, chengjiao.Size)
 	if err != nil {
 		panic(err)
 	}
