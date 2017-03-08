@@ -15,7 +15,7 @@ func GetErshoufang(url string) *ershoufang.Ershoufang {
 	return inspector.InspectErshoufang(string(bytes))
 }
 
-func FetchErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_price.ErshoufangPrice) {
+func FetchErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_price.ErshoufangPrice, error) {
 	return inspector.InspectErshoufangFromUrl(url)
 }
 
