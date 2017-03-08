@@ -21,10 +21,15 @@ func InspectErshoufang(content string) *ershoufang.Ershoufang {
 	return nil
 }
 
-func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_price.ErshoufangPrice) {
+func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_price.ErshoufangPrice, error) {
 	doc, err := GetDocFromUrl(url)
-	if err != nil {
-		return nil, nil
+	switch err.(type) {
+	case YichengjiaoError:
+		return nil, nil, err
+	case nil:
+		//nothing
+	default:
+		return nil, nil, nil
 	}
 	html, _ := doc.Html()
 
@@ -49,7 +54,7 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 	price, _ := strconv.ParseInt(doc.Find("div.content div.houseInfo div.price div.mainInfo").Nodes[0].FirstChild.Data, 10, 64)
 	unitPriceStr := doc.Find("table.aroundInfo td:contains(单价) span").Nodes[0].NextSibling.Data
 	unitPrice, _ := strconv.ParseInt(regexp.MustCompile("\\d+").FindString(unitPriceStr), 10, 64)
-	return ershoufang_repo.New(pageId, name, size, xiaoquPageId, soldDate), ershoufang_price_repo.New(0, 0, int(price), int(unitPrice))
+	return ershoufang_repo.New(pageId, name, size, xiaoquPageId, soldDate), ershoufang_price_repo.New(0, 0, int(price), int(unitPrice)), nil
 }
 
 func InspectXiaoquFromUrl(url string) *xiaoqu.Xiaoqu {

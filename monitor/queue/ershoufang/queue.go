@@ -52,7 +52,16 @@ func checkErshoufang(ershoufang *ershoufang.Ershoufang, wg *sync.WaitGroup) {
 	defer func() {
 		limit <- struct{}{}
 	}()
-	house, price := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
+	house, price, yichengjiao := inspector.InspectErshoufangFromUrl(ershoufang.GetUrl())
+	if yichengjiao != nil {
+		t := time.Now()
+		if ershoufang.SoldDate == nil {
+			ershoufang.SoldDate = &t
+			ershoufang_repo.Update(ershoufang)
+		}
+		wg.Done()
+		return
+	}
 	if house == nil {
 		wg.Done()
 		return

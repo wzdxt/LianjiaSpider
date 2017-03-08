@@ -29,7 +29,7 @@ func executeSelect(where string, bindings... interface{}) []*ershoufang.Ershoufa
 	return ret
 }
 
-func Get(id string) *ershoufang.Ershoufang {
+func Get(id int64) *ershoufang.Ershoufang {
 	return executeSelect("where id=?", id)[0]
 }
 
