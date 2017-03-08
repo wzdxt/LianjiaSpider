@@ -14,31 +14,36 @@ WHERE date_format(created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d');
 
 # 调价历史
 SELECT
-  xq.name      小区,
-  h.name       房产,
-  p.created_at 时间,
-  p.price      总价,
-  p.unit_price 单价
+  xq.name                小区,
+  h.name                 房产,
+  p.created_at           时间,
+  p_prev.price           调价前,
+  p.price - p_prev.price 差价,
+  p.price                调价后,
+  p.unit_price           单价
 FROM ershoufang h
   JOIN ershoufang_price pp ON h.id = pp.ershoufang_id AND pp.prev_id > 0
                               AND date_format(pp.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
   LEFT JOIN ershoufang_price p ON h.id = p.ershoufang_id
+  JOIN ershoufang_price p_prev ON p_prev.id = p.prev_id
   JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
 ORDER BY xq.id, h.id, p.id;
 
 # 今日调价趋势
 SELECT
   sum(调幅),
+  sum(abs(调幅) + 调幅) / 2 上调,
+  sum(abs(调幅) - 调幅) / 2 下调,
   sum(面积),
   sum(调幅) / sum(面积) * 100 单价差
 FROM (
        SELECT
-         xq.name            小区,
-         h.name             房产,
-         h.size             面积,
-         p.price - pp.price 调幅
+         xq.name                小区,
+         h.name                 房产,
+         h.size                 面积,
+         p.price - p_prev.price 调幅
        FROM ershoufang_price p
-         JOIN ershoufang_price pp ON p.prev_id = pp.id
+         JOIN ershoufang_price p_prev ON p.prev_id = p_prev.id
          JOIN ershoufang h ON p.ershoufang_id = h.id
          JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
        WHERE date_format(p.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')

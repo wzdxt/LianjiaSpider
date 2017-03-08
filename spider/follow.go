@@ -11,11 +11,48 @@ import (
 	"time"
 	"github.com/wzdxt/lianjia-spider/models/chengjiao/repo"
 	"github.com/go-sql-driver/mysql"
+	"net/http"
+	"net/url"
+	"io/ioutil"
+	"encoding/json"
+	"net/http/cookiejar"
 )
 
 var chengjiaoConflict = 0
 
+func login() {
+	client := http.DefaultClient
+	client.Jar, _ = cookiejar.New(nil)
+	client.Get("http://sh.lianjia.com")
+	//httpurl, _ := url.ParseRequestURI("http://sh.lianjia.com")
+	//log.Printf("%#v", httpurl)
+	t := time.Now().UnixNano() / 1000 / 1000
+	resp, _ := client.Get("https://passport.lianjia.com/cas/prelogin/loginTicket?v=" + string(t))
+	defer resp.Body.Close()
+	bs, _ := ioutil.ReadAll(resp.Body)
+	var m = make(map[string]string)
+	json.Unmarshal(bs, &m)
+	//log.Printf("%#v", m)
+	resp, _ = client.PostForm("https://passport.lianjia.com/cas/login", url.Values{
+		"username" : {"18501622774"},
+		"password" : {"woshi123654"},
+		"verifycode" : {""},
+		"service":{"http://sh.lianjia.com"},
+		"isajax":{"true"},
+		"lt":{m["data"]},
+	})
+	defer resp.Body.Close()
+	//log.Printf("%#v", client.Jar.Cookies(httpurl))
+	resp, _ = client.Get("http://user.sh.lianjia.com/index")
+	defer resp.Body.Close()
+	bs, _ = ioutil.ReadAll(resp.Body)
+	//log.Printf("%#v", resp.Header)
+	//log.Printf("%s", string(bs))
+	//println(err)
+}
+
 func FollowChengjiao() {
+	login()
 	for i := 1; ; i++ {
 		if cnt := travelChengjiao(i); cnt == 0 {
 			return
