@@ -16,7 +16,6 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"net/http/cookiejar"
-	"os"
 )
 
 var chengjiaoConflict = 0
