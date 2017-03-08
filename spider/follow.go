@@ -57,10 +57,10 @@ func FollowChengjiao() {
 		if cnt := travelChengjiao(i); cnt == 0 {
 			return
 		}
-		if chengjiaoConflict > 200 {
-			time.Sleep(30 * time.Minute)
-			return
-		}
+		//if chengjiaoConflict > 200 {
+		//	time.Sleep(30 * time.Minute)
+		//	return
+		//}
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -78,7 +78,8 @@ func travelChengjiao(i int) int {
 				}
 			}
 		}()
-		name := strings.Trim(sel.Find("div.info-panel h2").Text(), " \t\n")
+		title := strings.Trim(sel.Find("div.info-panel h2").Text(), " \t\n")
+		name, room, size := parseTitle(title)
 		pageId, _ := sel.Find("div.info-panel h2 a").Attr("key")
 		pic, _ := sel.Find("div.pic-panel > div.pic-panel a img").Attr("src")
 		qu := sel.Find("div.info-panel div.col-1 div.other div.con a").Eq(0).Text()
@@ -91,19 +92,16 @@ func travelChengjiao(i int) int {
 		unitPrice := fetchNumber(upStr)
 		pStr := sel.Find("div.info-panel div.col-2 div.dealType div.fr div.div-cun").Eq(0).Text()
 		price := fetchNumber(pStr)
-		log.Println(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price)
-		repo.Create(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price)
+		log.Println(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price, room, size)
+		repo.Create(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price, room, size)
 	}).Size()
 }
 
-func parseMix(text string) (string, string, string) {
+func parseMix(text string) (louceng string, chaoxiang string, zhuangxiu string) {
 	text = strings.Replace(text, "\t", "", -1);
 	text = strings.Replace(text, "\n", "", -1);
 	text = strings.Replace(text, " ", "", -1);
 	strs := regexp.MustCompile("\\|([^\\|]*)").FindAllStringSubmatch(text, -1)
-	louceng := ""
-	chaoxiang := ""
-	zhuangxiu := ""
 	i := 0
 	if len(strs) > i && strings.HasSuffix(strs[i][1], "层") {
 		louceng = strs[i][1]
@@ -117,7 +115,24 @@ func parseMix(text string) (string, string, string) {
 		zhuangxiu = strs[i][1]
 		i++
 	}
-	return louceng, chaoxiang, zhuangxiu
+	return
+}
+
+func parseTitle(title string) (name string, room string, size float64) {
+	strs := strings.Split(title, " ")
+	i := 0
+	name = strs[i]
+	i++
+	if len(strs) > i && strings.Contains(strs[i], "室") {
+		room = strs[i]
+		i++
+	}
+	if len(strs) > i && strings.HasSuffix(strs[i], "平米") {
+		sizeStr := regexp.MustCompile("[\\d\\.]+").FindString(strs[i])
+		size, _ = strconv.ParseFloat(sizeStr, 64)
+		i++
+	}
+	return
 }
 
 func fetchNumber(text string) int {

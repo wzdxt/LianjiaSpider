@@ -15,5 +15,7 @@ type Chengjiao struct {
 	Date      time.Time
 	UnitPrice int
 	Price     int
+	Room      string
+	Size      float64
 }
 

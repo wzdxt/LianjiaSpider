@@ -20,7 +20,7 @@ func Save(chengjiao *chengjiao.Chengjiao) *chengjiao.Chengjiao {
 	return chengjiao
 }
 
-func New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, date time.Time, unitPrice, price     int) *chengjiao.Chengjiao {
+func New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, date time.Time, unitPrice, price     int, room string, size float64) *chengjiao.Chengjiao {
 	return &chengjiao.Chengjiao{
 		Name  :name,
 		PageId:  pageId,
@@ -33,10 +33,12 @@ func New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, d
 		Date  :date,
 		UnitPrice  :unitPrice,
 		Price  :price,
+		Room:room,
+		Size:size,
 	}
 }
 
-func Create(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, date time.Time, unitPrice, price     int) *chengjiao.Chengjiao {
-	return Save(New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price))
+func Create(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu string, date time.Time, unitPrice, price     int, room string, size float64) *chengjiao.Chengjiao {
+	return Save(New(name, pageId, pic, qu, bankuai, louceng, chaoxiang, zhuangxiu, date, unitPrice, price, room, size))
 }
 
