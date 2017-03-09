@@ -5,7 +5,7 @@ SELECT
 FROM xiaoqu xq
   JOIN ershoufang h ON h.xiaoqu_page_id = xq.page_id
 GROUP BY xq.id
-ORDER BY 均价;
+ORDER BY xq.id, 均价;
 
 # 今日调价
 SELECT *

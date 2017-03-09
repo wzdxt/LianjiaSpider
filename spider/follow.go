@@ -57,10 +57,10 @@ func FollowChengjiao() {
 		if cnt := travelChengjiao(i); cnt == 0 {
 			return
 		}
-		//if chengjiaoConflict > 200 {
-		//	time.Sleep(30 * time.Minute)
-		//	return
-		//}
+		if chengjiaoConflict > 200 {
+			time.Sleep(30 * time.Minute)
+			return
+		}
 		time.Sleep(1 * time.Second)
 	}
 }
