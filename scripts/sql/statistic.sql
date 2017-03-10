@@ -59,6 +59,7 @@ SELECT
   sum(调幅) / sum(面积) * 100     单价差
 FROM (
        SELECT
+         h.xiaoqu               小区,
          p.created_at           时间,
          p.price - p_prev.price 调幅,
          h.size                 面积
@@ -66,6 +67,7 @@ FROM (
          JOIN ershoufang_price p_prev ON p.prev_id = p_prev.id
          JOIN ershoufang h ON p.ershoufang_id = h.id
          JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
+       WHERE (h.xiaoqu = '普陀' OR h.bankuai = '普陀' OR h.qu = '普陀')
      ) t
 GROUP BY date_format(时间, '%y-%m-%d');
 
