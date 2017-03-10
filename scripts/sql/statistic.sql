@@ -1,11 +1,10 @@
 # 小区均价
 SELECT
-  xq.name                          小区,
+  h.xiaoqu                         小区,
   sum(h.price) / sum(h.size / 100) 均价
-FROM xiaoqu xq
-  JOIN ershoufang h ON h.xiaoqu_page_id = xq.page_id
-GROUP BY xq.id
-ORDER BY xq.id, 均价;
+FROM ershoufang h
+GROUP BY h.xiaoqu
+ORDER BY 均价 DESC;
 
 # 今日调价
 SELECT *
@@ -14,7 +13,7 @@ WHERE date_format(created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d');
 
 # 调价历史
 SELECT
-  xq.name                小区,
+  h.xiaoqu               小区,
   h.name                 房产,
   p.created_at           时间,
   p_prev.price           调价前,

@@ -63,6 +63,6 @@ func InspectXiaoquFromUrl(url string) *xiaoqu.Xiaoqu {
 
 	log.Println(pageId)
 	log.Println(name)
-	return xiaoqu_repo.New(pageId, name, int(number64))
+	return xiaoqu_repo.New(pageId, name, "", "", int(number64))
 }
 

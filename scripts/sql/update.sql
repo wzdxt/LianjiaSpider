@@ -23,4 +23,15 @@ SET unit_price =
   LIMIT 1
 );
 
+UPDATE xiaoqu xq
+  JOIN (
+         SELECT
+           h.xiaoqu       xiaoqu,
+           max(h.bankuai) bankuai,
+           max(h.qu)      qu
+         FROM ershoufang h
+         WHERE h.xiaoqu IS NOT NULL
+         GROUP BY h.xiaoqu) t
+    ON xq.name = t.xiaoqu
+SET xq.bankuai = t.bankuai, xq.qu = t.qu;
 

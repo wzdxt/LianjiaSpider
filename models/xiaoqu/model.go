@@ -3,10 +3,12 @@ package xiaoqu
 import "fmt"
 
 type Xiaoqu struct {
-	Id     int64
-	PageId string
-	Name   string
-	Number int
+	Id      int64
+	PageId  string
+	Name    string
+	Number  int
+	Qu      string
+	Bankuai string
 }
 
 func (this *Xiaoqu) GetUrl() string {

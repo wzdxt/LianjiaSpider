@@ -93,13 +93,15 @@ func travelXiaoquListRange(i int) int {
 		xiaoquName := sel.Find("h2 a").Text()
 		xiaoquNumber64, _ := strconv.ParseInt(sel.Find("div.square span.num").Text(), 10, 64)
 		xiaoquNumber := int(xiaoquNumber64)
-		log.Printf("in page %d found %s", i, xiaoquName)
+		qu := sel.Find("div.col-1 div.other div.con a.ad").Text()
+		bankuai := sel.Find("div.col-1 div.other div.con a.ad").Next().Text()
+		log.Printf("in page %d found %s %s %s", i, xiaoquName, qu, bankuai)
 		old := xiaoqu_repo.GetByPageId(xiaoquPageId)
 		if (old == nil) {
-			xiaoqu := xiaoqu_repo.Create(xiaoquPageId, xiaoquName, xiaoquNumber)
+			xiaoqu := xiaoqu_repo.Create(xiaoquPageId, xiaoquName, qu, bankuai, xiaoquNumber)
 			log.Printf("create new xiaoqu %#v", xiaoqu)
 		} else {
-			old.Name, old.Number = xiaoquName, xiaoquNumber
+			old.Name, old.Number, old.Qu, old.Bankuai = xiaoquName, xiaoquNumber, qu, bankuai
 			xiaoqu_repo.Save(old)
 			log.Printf("udpated xiaoqu %#v", old)
 		}

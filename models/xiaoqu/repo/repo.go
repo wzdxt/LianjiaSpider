@@ -6,7 +6,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*xiaoqu.Xiaoqu {
-	rows, err := db.DBInstance().Query("select id, page_id, name, number from xiaoqu " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, page_id, name, qu, bankuai number from xiaoqu " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
@@ -19,6 +19,8 @@ func executeSelect(where string, bindings... interface{}) []*xiaoqu.Xiaoqu {
 			&xiaoqu.Id,
 			&xiaoqu.PageId,
 			&xiaoqu.Name,
+			&xiaoqu.Qu,
+			&xiaoqu.Bankuai,
 			&xiaoqu.Number,
 		)
 		ret = append(ret, xiaoqu)
@@ -56,8 +58,8 @@ func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 		Update(xiaoqu)
 		return xiaoqu
 	}
-	res, err := db.DBInstance().Exec("insert into xiaoqu (page_id, name, number) values(?,?,?)",
-		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Number)
+	res, err := db.DBInstance().Exec("insert into xiaoqu (page_id, name, qu, bankuai, number) values(?,?,?)",
+		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Qu, xiaoqu.Bankuai, xiaoqu.Number)
 	if err != nil {
 		panic(err)
 	}
@@ -66,8 +68,8 @@ func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 }
 
 func Update(xiaoqu *xiaoqu.Xiaoqu) int64 {
-	res, err := db.DBInstance().Exec("update xiaoqu set page_id=?, name=?, number=? where id=?",
-		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Number, xiaoqu.Id, )
+	res, err := db.DBInstance().Exec("update xiaoqu set page_id=?, name=?, qu=?, bankuai=?, number=? where id=?",
+		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Qu, xiaoqu.Bankuai, xiaoqu.Number, xiaoqu.Id, )
 	if err != nil {
 		panic(err)
 	}
@@ -75,15 +77,17 @@ func Update(xiaoqu *xiaoqu.Xiaoqu) int64 {
 	return ret
 }
 
-func New(pageId, name string, number int) *xiaoqu.Xiaoqu {
+func New(pageId, name, qu, bankuai string, number int) *xiaoqu.Xiaoqu {
 	return &xiaoqu.Xiaoqu{
 		Name:name,
 		PageId:pageId,
 		Number:number,
+		Qu:qu,
+		Bankuai:bankuai,
 	}
 }
 
-func Create(pageId, name string, number int) *xiaoqu.Xiaoqu {
-	inst := New(pageId, name, number)
+func Create(pageId, name, qu, bankuai string, number int) *xiaoqu.Xiaoqu {
+	inst := New(pageId, name, qu, bankuai, number)
 	return Save(inst)
 }
