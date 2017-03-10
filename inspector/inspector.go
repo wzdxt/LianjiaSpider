@@ -11,7 +11,7 @@ import (
 	"github.com/wzdxt/lianjia-spider/models/ershoufang"
 	"github.com/wzdxt/lianjia-spider/models/ershoufang_price"
 	"github.com/wzdxt/lianjia-spider/models/xiaoqu"
-	"time"
+	"strings"
 )
 
 func InspectErshoufang(content string) *ershoufang.Ershoufang {
@@ -27,7 +27,7 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 	case YichengjiaoError:
 		return nil, nil, err
 	case nil:
-		//nothing
+	//nothing
 	default:
 		return nil, nil, nil
 	}
@@ -39,18 +39,15 @@ func InspectErshoufangFromUrl(url string) (*ershoufang.Ershoufang, *ershoufang_p
 	node := (doc.Find("div.content div.houseInfo div.area div.mainInfo"))
 	fSize, _ := strconv.ParseFloat(node.Nodes[0].FirstChild.Data, 32)
 	size := math.Floor(fSize * 100 + 0.5)
-	xiaoquLink, exist := doc.Find("table.aroundInfo a.propertyEllipsis.ml_5").Attr("href")
-	var xiaoquPageId string
-	if exist {
-		xiaoquPageId = regexp.MustCompile("/(\\d+)\\.html").FindStringSubmatch(xiaoquLink)[1]
-	} else {
-		xiaoquPageId = ""
-	}
-	var soldDate *time.Time = nil
+	xiaoquLink, _ := doc.Find("table.aroundInfo a.propertyEllipsis.ml_5").Attr("href")
+	xiaoquPageId := regexp.MustCompile("/(\\d+)\\.html").FindStringSubmatch(xiaoquLink)[1]
+	xiaoqu := doc.Find("table.aroundInfo a.propertyEllipsis.ml_5").Text()
+	strs := strings.Split(doc.Find("table.aroundInfo span.fl span.areaEllipsis").Text(), " ")
+	qu, bankuai := strs[0], strs[1]
 	price, _ := strconv.ParseInt(doc.Find("div.content div.houseInfo div.price div.mainInfo").Nodes[0].FirstChild.Data, 10, 64)
 	unitPriceStr := doc.Find("table.aroundInfo td:contains(单价) span").Nodes[0].NextSibling.Data
 	unitPrice, _ := strconv.ParseInt(regexp.MustCompile("\\d+").FindString(unitPriceStr), 10, 64)
-	return ershoufang_repo.New(pageId, name, size, xiaoquPageId, soldDate), ershoufang_price_repo.New(0, 0, int(price), int(unitPrice)), nil
+	return ershoufang_repo.New(pageId, name, size, xiaoqu, bankuai, qu, xiaoquPageId, nil), ershoufang_price_repo.New(0, 0, int(price), int(unitPrice)), nil
 }
 
 func InspectXiaoquFromUrl(url string) *xiaoqu.Xiaoqu {

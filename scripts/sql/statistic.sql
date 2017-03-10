@@ -32,8 +32,8 @@ ORDER BY xq.id, h.id, p.id;
 # 今日调价趋势
 SELECT
   sum(调幅),
-  sum(abs(调幅) + 调幅) / 2 上调,
-  sum(abs(调幅) - 调幅) / 2 下调,
+  sum(abs(调幅) + 调幅) / 2   上调,
+  sum(abs(调幅) - 调幅) / 2   下调,
   sum(面积),
   sum(调幅) / sum(面积) * 100 单价差
 FROM (
@@ -48,6 +48,26 @@ FROM (
          JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
        WHERE date_format(p.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
      ) t;
+
+# 每日调价趋势
+SELECT
+  date_format(时间, '%y-%m-%d') 时间,
+  sum(调幅)                     总差额,
+  sum(abs(调幅) + 调幅) / 2       上调,
+  sum(abs(调幅) - 调幅) / 2       下调,
+  sum(面积)                     总面积,
+  sum(调幅) / sum(面积) * 100     单价差
+FROM (
+       SELECT
+         p.created_at           时间,
+         p.price - p_prev.price 调幅,
+         h.size                 面积
+       FROM ershoufang_price p
+         JOIN ershoufang_price p_prev ON p.prev_id = p_prev.id
+         JOIN ershoufang h ON p.ershoufang_id = h.id
+         JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
+     ) t
+GROUP BY date_format(时间, '%y-%m-%d');
 
 # 今日新房源
 SELECT

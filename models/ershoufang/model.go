@@ -14,6 +14,9 @@ type Ershoufang struct {
 	PageId       string
 	Name         string
 	Size         float64
+	Xiaoqu       string
+	Bankuai      string
+	Qu           string
 	XiaoquPageId string
 	SoldDate     *time.Time
 
@@ -36,7 +39,7 @@ func (this *Ershoufang) GetLastPrice() *ershoufang_price.ErshoufangPrice {
 }
 
 func (this *Ershoufang) String() string {
-	return fmt.Sprint([]interface{}{this.Id, this.PageId, this.Name, this.Size, this.XiaoquPageId, this.SoldDate})
+	return fmt.Sprint([]interface{}{this.Id, this.PageId, this.Name, this.Size, this.Xiaoqu, this.Bankuai, this.Qu, this.XiaoquPageId})
 }
 
 func Save() {}

@@ -21,6 +21,7 @@ func RedisInstance() *redis.Client {
 }
 
 func GetLastErshoufangProcessId() int64 {
+	return 1
 	client := RedisInstance()
 	str, _ := client.Get("process:ershoufang")
 	res64, _ := strconv.ParseInt(str, 10, 64)

@@ -33,6 +33,14 @@ func Get(id int64) *ershoufang.Ershoufang {
 	return executeSelect("where id=?", id)[0]
 }
 
+func GetByPageId(pageId string) (ret *ershoufang.Ershoufang) {
+	res := executeSelect("where page_id=?", pageId)
+	if len(res) > 0 {
+		ret = res[0]
+	}
+	return
+}
+
 func All() []*ershoufang.Ershoufang {
 	return executeSelect("")
 }
@@ -69,18 +77,21 @@ func Update(ershoufang *ershoufang.Ershoufang) int64 {
 	return ret
 }
 
-func New(pageId, name string, size float64, xiaoquPageId string, soldDate *time.Time) *ershoufang.Ershoufang {
+func New(pageId, name string, size float64, xiaoqu, bankuai, qu, xiaoquPageId string, soldDate *time.Time) *ershoufang.Ershoufang {
 	return &ershoufang.Ershoufang{
 		PageId:       pageId,
 		Name:            name,
 		Size:            size,
 		XiaoquPageId: xiaoquPageId,
+		Xiaoqu: xiaoqu,
+		Bankuai: bankuai,
+		Qu: qu,
 		SoldDate:soldDate,
 	}
 }
 
-func Create(pageId, name string, size float64, xiaoquPageId string, soldDate *time.Time) *ershoufang.Ershoufang {
-	return Save(New(pageId, name, size, xiaoquPageId, soldDate))
+func Create(pageId, name string, size float64, xiaoqu, bankuai, qu, xiaoquPageId string, soldDate *time.Time) *ershoufang.Ershoufang {
+	return Save(New(pageId, name, size, xiaoqu, bankuai, qu, xiaoquPageId, soldDate))
 }
 
 

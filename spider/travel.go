@@ -55,7 +55,9 @@ func travelXiaoqu(xiaoqu *xiaoqu.Xiaoqu) {
 			log.Printf("found %#v", ershoufangName)
 			mutex.Lock()
 			defer mutex.Unlock()
-			ershoufang_repo.Create(ershoufangPageId, ershoufangName, 0, xiaoqu.PageId, nil)
+			if ershoufang_repo.GetByPageId(ershoufangPageId) == nil {
+				ershoufang_repo.Create(ershoufangPageId, ershoufangName, 0, "", "", "", xiaoqu.PageId, nil)
+			}
 		}).Size() == 0 {
 			break;
 		}
