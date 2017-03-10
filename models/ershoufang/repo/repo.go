@@ -7,7 +7,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*ershoufang.Ershoufang {
-	rows, err := db.DBInstance().Query("select id, page_id, name, size, xiaoqu_page_id, sold_date from ershoufang " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, page_id, name, size, xiaoqu, bankuai, qu, xiaoqu_page_id, sold_date from ershoufang " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
@@ -21,6 +21,9 @@ func executeSelect(where string, bindings... interface{}) []*ershoufang.Ershoufa
 			&ershoufang.PageId,
 			&ershoufang.Name,
 			&ershoufang.Size,
+			&ershoufang.Xiaoqu,
+			&ershoufang.Bankuai,
+			&ershoufang.Qu,
 			&ershoufang.XiaoquPageId,
 			ershoufang.SoldDate,
 		)
@@ -58,8 +61,8 @@ func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
 		Update(ershoufang)
 		return ershoufang
 	}
-	res, err := db.DBInstance().Exec("insert into ershoufang (page_id, name, size, xiaoqu_page_id, sold_date) values(?,?,?,?,?)",
-		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.XiaoquPageId, ershoufang.SoldDate)
+	res, err := db.DBInstance().Exec("insert into ershoufang (page_id, name, size, xiaoqu, bankuai, qu, xiaoqu_page_id, sold_date) values(?,?,?,?,?)",
+		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.Xiaoqu, ershoufang.Bankuai, ershoufang.Qu, ershoufang.XiaoquPageId, ershoufang.SoldDate)
 	if err != nil {
 		panic(err)
 	}
@@ -68,8 +71,8 @@ func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
 }
 
 func Update(ershoufang *ershoufang.Ershoufang) int64 {
-	res, err := db.DBInstance().Exec("update ershoufang set page_id=?, name=?, size=?, xiaoqu_page_id=?, sold_date=? where id=?",
-		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.XiaoquPageId, ershoufang.SoldDate, ershoufang.Id, )
+	res, err := db.DBInstance().Exec("update ershoufang set page_id=?, name=?, size=?, xiaoqu=?, bankuai=?, qu=?, xiaoqu_page_id=?, sold_date=? where id=?",
+		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.Xiaoqu, ershoufang.Bankuai, ershoufang.Qu, ershoufang.XiaoquPageId, ershoufang.SoldDate, ershoufang.Id, )
 	if err != nil {
 		panic(err)
 	}
