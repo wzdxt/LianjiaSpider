@@ -58,7 +58,7 @@ func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {
 		Update(xiaoqu)
 		return xiaoqu
 	}
-	res, err := db.DBInstance().Exec("insert into xiaoqu (page_id, name, qu, bankuai, number) values(?,?,?)",
+	res, err := db.DBInstance().Exec("insert into xiaoqu (page_id, name, qu, bankuai, number) values(?,?,?,?,?)",
 		xiaoqu.PageId, xiaoqu.Name, xiaoqu.Qu, xiaoqu.Bankuai, xiaoqu.Number)
 	if err != nil {
 		panic(err)

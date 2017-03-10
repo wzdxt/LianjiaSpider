@@ -61,7 +61,7 @@ func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
 		Update(ershoufang)
 		return ershoufang
 	}
-	res, err := db.DBInstance().Exec("insert into ershoufang (page_id, name, size, xiaoqu, bankuai, qu, xiaoqu_page_id, sold_date) values(?,?,?,?,?)",
+	res, err := db.DBInstance().Exec("insert into ershoufang (page_id, name, size, xiaoqu, bankuai, qu, xiaoqu_page_id, sold_date) values(?,?,?,?,?,?,?,?)",
 		ershoufang.PageId, ershoufang.Name, ershoufang.Size, ershoufang.Xiaoqu, ershoufang.Bankuai, ershoufang.Qu, ershoufang.XiaoquPageId, ershoufang.SoldDate)
 	if err != nil {
 		panic(err)
