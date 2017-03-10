@@ -6,7 +6,7 @@ import (
 )
 
 func executeSelect(where string, bindings... interface{}) []*xiaoqu.Xiaoqu {
-	rows, err := db.DBInstance().Query("select id, page_id, name, qu, bankuai number from xiaoqu " + where, bindings...)
+	rows, err := db.DBInstance().Query("select id, page_id, name, qu, bankuai, number from xiaoqu " + where, bindings...)
 	if err != nil {
 		panic(err)
 	}
