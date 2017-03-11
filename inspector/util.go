@@ -23,7 +23,7 @@ func init() {
 	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		log.Printf("%#v", req)
 		log.Printf("%#v", via)
-		if len(via) == 1 && strings.HasPrefix(via[0].URL.Path, "/ershoufang/") {
+		if len(via) == 1 && strings.HasPrefix(via[0].URL.Path, "/ershoufang/") && strings.HasPrefix(req.URL.Path, "/chengjiao/") {
 			return YichengjiaoError{}
 		}
 		return nil
