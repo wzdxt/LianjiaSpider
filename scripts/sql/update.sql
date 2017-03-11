@@ -35,3 +35,7 @@ UPDATE xiaoqu xq
     ON xq.name = t.xiaoqu
 SET xq.bankuai = t.bankuai, xq.qu = t.qu;
 
+UPDATE ershoufang h
+  JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
+SET h.xiaoqu = xq.name, h.qu = xq.qu, h.bankuai = xq.bankuai;
+

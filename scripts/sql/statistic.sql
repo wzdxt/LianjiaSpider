@@ -13,19 +13,23 @@ WHERE date_format(created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d');
 
 # 调价历史
 SELECT
-  h.xiaoqu               小区,
-  h.name                 房产,
-  p.created_at           时间,
-  p_prev.price           调价前,
-  p.price - p_prev.price 差价,
-  p.price                调价后,
-  p.unit_price           单价
+  h.qu                                  区,
+  h.bankuai                             板块,
+  h.xiaoqu                              小区,
+  h.name                                房产,
+  date_format(p.created_at, '%y-%m-%d') 时间,
+  p_prev.price                          调价前,
+  p.price - p_prev.price                差价,
+  p.price                               调价后,
+  p.unit_price                          单价,
+  p.unit_price - p_prev.unit_price      单价
 FROM ershoufang h
-  JOIN ershoufang_price pp ON h.id = pp.ershoufang_id AND pp.prev_id > 0
-                              AND date_format(pp.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
+  #   JOIN ershoufang_price pp ON h.id = pp.ershoufang_id AND pp.prev_id > 0
+  #                               AND date_format(pp.created_at, '%y-%m-%d') = date_format(now(), '%y-%m-%d')
   LEFT JOIN ershoufang_price p ON h.id = p.ershoufang_id
   JOIN ershoufang_price p_prev ON p_prev.id = p.prev_id
   JOIN xiaoqu xq ON h.xiaoqu_page_id = xq.page_id
+WHERE h.xiaoqu = '' OR h.bankuai = '' OR h.qu = '' OR 1 = 1
 ORDER BY xq.id, h.id, p.id;
 
 # 今日调价趋势
