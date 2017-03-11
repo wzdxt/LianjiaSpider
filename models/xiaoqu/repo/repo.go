@@ -50,7 +50,7 @@ func AllWithErshoufang() []*xiaoqu.Xiaoqu {
 }
 
 func WithErshoufangBatchAfter(id int64) []*xiaoqu.Xiaoqu {
-	return executeSelect("where number>0 and id>? order by id limit 1000", id)
+	return executeSelect("where number>0 and id>? order by id limit 100", id)
 }
 
 func Save(xiaoqu *xiaoqu.Xiaoqu) *xiaoqu.Xiaoqu {

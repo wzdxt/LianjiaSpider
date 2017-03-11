@@ -53,7 +53,7 @@ func Unsold() []*ershoufang.Ershoufang {
 }
 
 func UnsoldBatchAfter(id int64) []*ershoufang.Ershoufang {
-	return executeSelect("where sold_date is null and id>? order by id limit 1000", id)
+	return executeSelect("where sold_date is null and id>? order by id limit 100", id)
 }
 
 func Save(ershoufang *ershoufang.Ershoufang) *ershoufang.Ershoufang {
