@@ -58,7 +58,8 @@ func FollowChengjiao() {
 			return
 		}
 		if chengjiaoConflict > 200 {
-			time.Sleep(30 * time.Minute)
+			log.Printf("get much duplication, sleep")
+			time.Sleep(1 * time.Hour)
 			return
 		}
 		time.Sleep(1 * time.Second)

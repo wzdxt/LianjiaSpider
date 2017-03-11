@@ -9,7 +9,6 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	spider.FollowChengjiao()
-	time.Sleep(1 * time.Hour)
 }
 
 
